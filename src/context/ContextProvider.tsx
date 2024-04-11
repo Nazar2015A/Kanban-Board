@@ -11,9 +11,9 @@ const kanbanLocalStorage: KanbanLocalStorage = JSON.parse(
 
 const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [columns, setColumns] = useState<Column[]>(
-    kanbanLocalStorage.columns || []
+    kanbanLocalStorage?.columns || []
   );
-  const [tasks, setTasks] = useState<Task[]>(kanbanLocalStorage.tasks || []);
+  const [tasks, setTasks] = useState<Task[]>(kanbanLocalStorage?.tasks || []);
 
   const kanbanContextValue: KanbanContextType = {
     tasks,
