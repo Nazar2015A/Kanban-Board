@@ -69,10 +69,10 @@ const KanbanBoard = () => {
     setTasks((prev) => [...prev, newTask]);
   };
 
-  const onDeleteTask = (id: Id) => {
+  const handleDeleteTask = (id: Id) => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
-  const updateTask = (id: Id, content: string) => {
+  const handleUpdateTask = (id: Id, content: string) => {
     setTasks((prev) =>
       prev.map((task) => {
         if (task.id !== id) return task;
@@ -177,8 +177,8 @@ const KanbanBoard = () => {
                   onColumnDelete={handleColumnDelete}
                   onUpdateColumn={handleUpdateColumn}
                   onCreateTask={onCreateTask}
-                  onDeleteTask={onDeleteTask}
-                  onUpdateTask={updateTask}
+                  onDeleteTask={handleDeleteTask}
+                  onUpdateTask={handleUpdateTask}
                   tasks={tasks.filter((task) => task.columnId === column.id)}
                 />
               ))}
@@ -202,8 +202,8 @@ const KanbanBoard = () => {
                 onColumnDelete={handleColumnDelete}
                 onUpdateColumn={handleUpdateColumn}
                 onCreateTask={onCreateTask}
-                onDeleteTask={onDeleteTask}
-                onUpdateTask={updateTask}
+                onDeleteTask={handleDeleteTask}
+                onUpdateTask={handleUpdateTask}
                 tasks={tasks.filter(
                   (task) => task.columnId === activeColumn.id
                 )}
@@ -212,8 +212,8 @@ const KanbanBoard = () => {
             {activeTask ? (
               <TaskCard
                 task={activeTask}
-                onDeleteTask={onDeleteTask}
-                onUpdateTask={updateTask}
+                onDeleteTask={handleDeleteTask}
+                onUpdateTask={handleUpdateTask}
               />
             ) : null}
           </DragOverlay>,
