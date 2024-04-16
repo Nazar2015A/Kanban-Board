@@ -28,7 +28,7 @@ const KanbanBoard = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3,
+        distance: 10,
       },
     })
   );
@@ -86,9 +86,12 @@ const KanbanBoard = () => {
   const handleDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === "Column") {
       setActiveColumn(event.active.data.current.column);
+      return;
     }
+
     if (event.active.data.current?.type === "Task") {
       setActiveTask(event.active.data.current.task);
+      return;
     }
   };
 
@@ -97,19 +100,20 @@ const KanbanBoard = () => {
     setActiveTask(null);
 
     const { active, over } = event;
-
     if (!over) return;
 
     const activeId = active.id;
     const overId = over.id;
 
     if (activeId === overId) return;
+
     const isActiveAColumn = active.data.current?.type === "Column";
     if (!isActiveAColumn) return;
 
-    setColumns((prev) => {
-      const activeColumnIndex = prev.findIndex((col) => col.id === activeId);
-      const overColumnIndex = prev.findIndex((col) => col.id === overId);
+    setColumns((columns) => {
+      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
+
+      const overColumnIndex = columns.findIndex((col) => col.id === overId);
 
       return arrayMove(columns, activeColumnIndex, overColumnIndex);
     });
@@ -134,7 +138,7 @@ const KanbanBoard = () => {
         const activeIndex = tasks.findIndex((t) => t.id === activeId);
         const overIndex = tasks.findIndex((t) => t.id === overId);
 
-        if (tasks[activeIndex].columnId !== tasks[overIndex].columnId) {
+        if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
           tasks[activeIndex].columnId = tasks[overIndex].columnId;
           return arrayMove(tasks, activeIndex, overIndex - 1);
         }
@@ -175,6 +179,7 @@ const KanbanBoard = () => {
                   onCreateTask={onCreateTask}
                   onDeleteTask={onDeleteTask}
                   onUpdateTask={updateTask}
+                  tasks={tasks.filter((task) => task.columnId === column.id)}
                 />
               ))}
             </SortableContext>
@@ -199,6 +204,9 @@ const KanbanBoard = () => {
                 onCreateTask={onCreateTask}
                 onDeleteTask={onDeleteTask}
                 onUpdateTask={updateTask}
+                tasks={tasks.filter(
+                  (task) => task.columnId === activeColumn.id
+                )}
               />
             ) : null}
             {activeTask ? (

@@ -14,7 +14,8 @@ interface Props {
 
 const TaskCard: FC<Props> = ({ task, onDeleteTask, onUpdateTask }) => {
   const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
-  const { editMode, toggleEditMode, closeEditModeOnKeyDown } = useEditMode(false);
+  const { editMode, toggleEditMode, closeEditModeOnKeyDown } =
+    useEditMode(false);
 
   const {
     setNodeRef,
@@ -59,14 +60,11 @@ const TaskCard: FC<Props> = ({ task, onDeleteTask, onUpdateTask }) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="relative opacity-60 bg-mainBackgroundColor cursor-grab p-2 pt-3 h-[100px] min-h-[100px] items-start flex text-left rounded-xl border-2 border-rose-500 task"
-      >
-        <div className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap ">
-          {task.content || (
-            <span className="text-grayColumn">Enter a task name</span>
-          )}
-        </div>
-      </div>
+        className="
+        opacity-30
+      bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl border-2 border-rose-500  cursor-grab relative
+      "
+      />
     );
   }
 

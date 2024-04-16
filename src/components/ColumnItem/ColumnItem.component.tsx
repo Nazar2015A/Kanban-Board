@@ -6,7 +6,7 @@ import DeleteIcon from "../../icons/DeleteIcon";
 import { useEditMode } from "../../hooks/useEditMode";
 import PlusIcon from "../../icons/PlusIcon";
 import TaskCard from "../TaskCard/TaskCard.component";
-import { useKanbanContext } from "../../context/useKanbanContext";
+import { Task } from "../../types/Task";
 
 interface Props {
   column: Column;
@@ -15,6 +15,7 @@ interface Props {
   onCreateTask: (id: Id) => void;
   onDeleteTask: (id: Id) => void;
   onUpdateTask: (id: Id, content: string) => void;
+  tasks: Task[]
 }
 
 const ColumnItem: FC<Props> = ({
@@ -24,10 +25,10 @@ const ColumnItem: FC<Props> = ({
   onCreateTask,
   onDeleteTask,
   onUpdateTask,
+  tasks
 }) => {
   const { editMode, closeEditMode, openEditMode, closeEditModeOnKeyDown } =
     useEditMode(false);
-  const { tasks } = useKanbanContext();
 
   const {
     setNodeRef,
@@ -44,11 +45,7 @@ const ColumnItem: FC<Props> = ({
     },
     disabled: editMode,
   });
-  const filteredTasks = useMemo(
-    () => tasks.filter((task) => task.columnId === column.id),
-    [tasks]
-  );
-  const tasksId = useMemo(() => tasks.map((task) => task.id), [filteredTasks]);
+  const tasksId = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const handleColumnDelete = () => {
     onColumnDelete(column.id);
@@ -94,7 +91,7 @@ const ColumnItem: FC<Props> = ({
       >
         <div className="flex gap-2 items-center">
           <div className="flex justify-center items-center bg-columnBackgroundColor px-2 py-1 text-sm">
-            {filteredTasks.length}
+            {tasks.length}
           </div>
           {editMode ? (
             <input
@@ -123,7 +120,7 @@ const ColumnItem: FC<Props> = ({
       </div>
       <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
         <SortableContext items={tasksId}>
-          {filteredTasks.map((task) => (
+          {tasks.map((task) => (
             <TaskCard
               key={task.id}
               task={task}
