@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useMemo, useState } from "react";
+import { FC, PropsWithChildren, useState, useEffect } from "react";
 import { Column } from "../types/Column";
 import { Task } from "../types/Task";
 import { KanbanBoardContext } from "./useKanbanContext";
@@ -21,7 +21,7 @@ const ContextProvider: FC<PropsWithChildren> = ({ children }) => {
     columns,
     setColumns,
   };
-  useMemo(() => {
+  useEffect(() => {
     localStorage.setItem("kanban", JSON.stringify({ tasks, columns }));
   }, [tasks, columns]);
 
